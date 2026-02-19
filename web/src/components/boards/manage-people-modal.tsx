@@ -39,6 +39,18 @@ export function ManagePeopleModal({
 }: ManagePeopleModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [activeTab, setActiveTab] = useState<"members" | "invitations">("members");
+  const submitInviteAction = async (formData: FormData) => {
+    await inviteAction(formData);
+  };
+  const submitUpdateMemberRoleAction = async (formData: FormData) => {
+    await updateMemberRoleAction(formData);
+  };
+  const submitRemoveMemberAction = async (formData: FormData) => {
+    await removeMemberAction(formData);
+  };
+  const submitRevokeInvitationAction = async (formData: FormData) => {
+    await revokeInvitationAction(formData);
+  };
 
   function lockBodyScroll() {
     document.body.style.overflow = "hidden";
@@ -150,7 +162,7 @@ export function ManagePeopleModal({
 
                       {canManage ? (
                         <div className="mt-2 flex flex-wrap items-center gap-2">
-                          <form action={updateMemberRoleAction} className="flex items-center gap-2">
+                          <form action={submitUpdateMemberRoleAction} className="flex items-center gap-2">
                             <input type="hidden" name="board_id" value={boardId} />
                             <input type="hidden" name="target_user_id" value={member.userId} />
                             <select
@@ -169,7 +181,7 @@ export function ManagePeopleModal({
                             </button>
                           </form>
 
-                          <form action={removeMemberAction}>
+                          <form action={submitRemoveMemberAction}>
                             <input type="hidden" name="board_id" value={boardId} />
                             <input type="hidden" name="target_user_id" value={member.userId} />
                             <button
@@ -189,7 +201,7 @@ export function ManagePeopleModal({
           ) : (
             <div className="space-y-3">
               {isBoardOwner ? (
-                <form action={inviteAction} className="grid gap-2 rounded-md border border-zinc-800 bg-zinc-900/60 p-3 sm:grid-cols-[1fr_auto_auto]">
+                <form action={submitInviteAction} className="grid gap-2 rounded-md border border-zinc-800 bg-zinc-900/60 p-3 sm:grid-cols-[1fr_auto_auto]">
                   <input type="hidden" name="board_id" value={boardId} />
                   <input
                     name="email"
@@ -227,7 +239,7 @@ export function ManagePeopleModal({
                         {new Date(invitation.expiresAt).toISOString().slice(0, 10)}
                       </p>
                       {isBoardOwner ? (
-                        <form action={revokeInvitationAction} className="mt-2">
+                        <form action={submitRevokeInvitationAction} className="mt-2">
                           <input type="hidden" name="board_id" value={boardId} />
                           <input type="hidden" name="invitation_id" value={invitation.id} />
                           <button
