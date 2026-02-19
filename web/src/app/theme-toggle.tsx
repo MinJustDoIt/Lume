@@ -4,6 +4,12 @@ import { useEffect, useState } from "react";
 
 type Theme = "dark" | "light";
 
+function readInitialTheme(): Theme {
+  if (typeof window === "undefined") return "dark";
+  const stored = window.localStorage.getItem("lume-theme");
+  return stored === "light" || stored === "dark" ? stored : "dark";
+}
+
 function applyTheme(theme: Theme) {
   const root = document.documentElement;
   root.classList.toggle("theme-light", theme === "light");
@@ -11,15 +17,11 @@ function applyTheme(theme: Theme) {
 }
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [theme, setTheme] = useState<Theme>(readInitialTheme);
 
   useEffect(() => {
-    const stored = window.localStorage.getItem("lume-theme");
-    const initialTheme: Theme = stored === "light" || stored === "dark" ? stored : "dark";
-
-    setTheme(initialTheme);
-    applyTheme(initialTheme);
-  }, []);
+    applyTheme(theme);
+  }, [theme]);
 
   function onToggle() {
     const nextTheme: Theme = theme === "dark" ? "light" : "dark";

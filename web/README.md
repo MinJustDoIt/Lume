@@ -43,27 +43,16 @@ npm run dev
 
 Then open [http://localhost:3000](http://localhost:3000).
 
-## Vercel CI/CD (GitHub Actions)
+## Deploy on Vercel (Manual)
 
-Workflow file: `.github/workflows/vercel-deploy.yml`
+Deploy directly from the Vercel dashboard:
 
-Add these repository secrets in GitHub (`Settings -> Secrets and variables -> Actions`):
-
-- `VERCEL_TOKEN`
-  - Create in Vercel: `Account Settings -> Tokens -> Create Token`
-- `VERCEL_ORG_ID`
-  - From Vercel project settings or from `.vercel/project.json` after linking locally
-- `VERCEL_PROJECT_ID`
-  - From Vercel project settings or from `.vercel/project.json` after linking locally
-
-Optional local helper to get IDs:
-
-```bash
-cd web
-npx vercel link
-```
-
-After linking, check `.vercel/project.json` for `orgId` and `projectId`.
+1. Create a new Vercel project and import this repository.
+2. Set project root directory to `web`.
+3. Add environment variables:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+4. Deploy.
 
 ## Notes
 
